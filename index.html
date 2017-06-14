@@ -40,45 +40,31 @@
     </div>
 </nav>
 <div class="container" ng-controller="loggyController as loggy">
-    <div class="row">
+   <div class="row alert alert-info">
         <div class="col-md-4">
-            <h3>Input trade</h3>
-            <pre>{{loggy.trade | json }}</pre>
-            <h3>Input reference price grid</h3>
-            <pre>{{loggy.instruments | json }}</pre>
+        This is a POC of a simple javascript based solution for logging of validation tests. When clicking the "inject trade" button the following will happen:
+        <ol>
+            <li>Simulated trade info is input in a queue</li>
+            <li>Test</li>
+        </ol>
+            <button ng-click="loggy.injectTrade()" class="btn btn-default">Inject Trade</button>
+            <button ng-click="loggy.executeTests()" class="btn btn-default">Run Tests</button>
         </div>
         <div class="col-md-4">
-            <h3>Assert function</h3>
-            <textarea class="form-control" rows="10" >
-
-return function solve(keyCharArray, cipherCharTree) {
-    console.log(keyCharArray); // F12 -> developer console
-    console.log(cipherCharTree);
-    return 'Tämä ei ole ratkaisu';
-}
-
-            </textarea>
-
         </div>
-
         <div class="col-md-4">
-            <h3>Alerts</h3>
-            <table class="table">
-                <thead>
-                    <th>Alert</th>
-                    <th>Verified</th>
-                </thead>
-                <tbody>
-                <tr ng-repeat="alert in loggy.alerts" class="{{alert.type}}">
-                    <td>{{alert.text}}</td>
-                    <td></td>
-                </tr>
-                </tbody>
-
-            </table>
+            <p>Trades in queue</p>
+            <ul>
+                <li ng-repeat="trade in loggy.JQ">{{trade.id}}</li>
+            </ul>
         </div>
+    </div>
 
 
+    <div class="row" ng-repeat="test in loggy.testSuite">
+        <div class="col-md-12"><h4>{{test.name}}</h4><p>{{test.description}}</p></div>
+        <div class="col-md-6"><pre>{{test.testFunction}}</pre></div>
+        <div class="col-md-6"><div class="alert alert-{{entry.type}}" ng-repeat="entry in test.log">{{entry.message}}</div></div>
     </div>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -86,8 +72,8 @@ return function solve(keyCharArray, cipherCharTree) {
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-javascript.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.4/angular-resource.min.js"></script>
+
 <script src="js/loggyApplication.js"></script>
 </body>
 </html>
