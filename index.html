@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Loggy</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -41,30 +41,29 @@
 </nav>
 <div class="container" ng-controller="loggyController as loggy">
    <div class="row alert alert-info">
-        <div class="col-md-4">
-        This is a POC of a simple javascript based solution for logging of validation tests. When clicking the "inject trade" button the following will happen:
+        <div class="col-md-8">
+        This is a POC of a simple javascript based solution for logging of validation tests.
         <ol>
-            <li>Simulated trade info is input in a queue</li>
-            <li>Test</li>
+            <li>click "inject trade" to simulated trade info is input in a queue</li>
+            <li>"click "Run tests" to start executing trades based on whats in queue</li>
         </ol>
             <button ng-click="loggy.injectTrade()" class="btn btn-default">Inject Trade</button>
             <button ng-click="loggy.executeTests()" class="btn btn-default">Run Tests</button>
         </div>
-        <div class="col-md-4">
-        </div>
+
         <div class="col-md-4">
             <p>Trades in queue</p>
-            <ul>
-                <li ng-repeat="trade in loggy.JQ">{{trade.id}}</li>
-            </ul>
+
+               <select readonly="readonly" multiple="true" size="10" style="width:80%">
+                   <option ng-repeat="trade in loggy.JQ">{{trade.id}}</option>
+               </select>
         </div>
     </div>
-
 
     <div class="row" ng-repeat="test in loggy.testSuite">
         <div class="col-md-12"><h4>{{test.name}}</h4><p>{{test.description}}</p></div>
         <div class="col-md-6"><pre>{{test.testFunction}}</pre></div>
-        <div class="col-md-6"><div class="alert alert-{{entry.type}}" ng-repeat="entry in test.log">{{entry.message}}</div></div>
+        <div class="col-md-6"><div class="alert alert-{{entry.type}}" ng-repeat="entry in test.log">{{entry.message}}<div class="pull-right"><span class="glyphicon glyphicon-ok "></span>&nbsp;<span class="glyphicon glyphicon-remove"></span>&nbsp;<span class="glyphicon glyphicon-envelope"></span></div></div></div>
     </div>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
