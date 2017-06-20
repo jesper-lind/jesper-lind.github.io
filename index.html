@@ -60,10 +60,37 @@
         </div>
     </div>
 
-    <div class="row" ng-repeat="test in loggy.testSuite">
-        <div class="col-md-12"><h4>{{test.name}}</h4><p>{{test.description}}</p></div>
+
+    <div class="alert alert-danger">
+        <ul>
+            <li>Add Log instead of "return"</li>
+            <li>Rework the layout pr test</li>
+            <li>Perhaps use "collapseables" and show findings via badges</li>
+            <li>mark the steward more clearly</li>
+            <li>mark the asset more clearly</li>
+
+
+        </ul>
+
+
+    </div>
+
+    <div ng-repeat="test in loggy.testSuite">
+
+
+
+        <div class="row">
+
+
+        <div class="col-md-4"><h4>{{test.dataAsset}} \ {{test.name}}</h4><p>{{test.description}}</p></div>
+        <div class="col-md-4"><h4>{{test.steward}}</h4></div>
+        <div class="col-md-3"></div>
+        </div>
+        <div class="row">
+        <div class="col-md-12"><h4>{{test.name}}</h4></div>
         <div class="col-md-6"><pre>{{test.testFunction}}</pre></div>
         <div class="col-md-6"><div class="alert alert-{{entry.type}}" ng-repeat="entry in test.log">{{entry.message}}<div class="pull-right"><span class="glyphicon glyphicon-ok "></span>&nbsp;<span class="glyphicon glyphicon-remove"></span>&nbsp;<span class="glyphicon glyphicon-envelope"></span></div></div></div>
+        </div>
     </div>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

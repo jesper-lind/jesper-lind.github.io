@@ -28,7 +28,11 @@ angular.module('loggyApp', ['ngResource'])
 loggy.testSuite = [
 {name:"Test price match NYSE",
  description:"Validate that the internal price captured matches that of external source",
-testFunction: function(object){
+    dataAsset:"Trade",
+    steward:"Ida Yde",
+    active:true,
+    triggerEvent:"onChange",
+        testFunction: function(object){
     var googleInstrument = getGoogleInstrument(object.instrument.id);
 
     if(googleInstrument!= null && assertEquals(googleInstrument.el,object.instrument.price)){
@@ -39,20 +43,25 @@ testFunction: function(object){
 }},
 {name:"Is instrument valid",
     description:"Validate that the instrument is contained within the allowed lists",
+    dataAsset:"Trade",
+    steward:"Ida Yde",
+    active:true,
+    triggerEvent:"onChange",
     testFunction:function(object) {
-    var found = false;
-    getAllowedInstruments().forEach(function (instrument) {
-        if (assertEquals(object.instrument.id, instrument.id)) {
-            found = true
-            return;
+            var found = false;
+            getAllowedInstruments().forEach(function (instrument) {
+                if (assertEquals(object.instrument.id, instrument.id)) {
+                    found = true
+                    return;
+                }
+            });
+            if(found){
+                return SUCCESS();
+            } else {
+                return FAILURE("object is NOT in the allowed instrument list")
+            }
         }
-    });
-    if(found){
-        return SUCCESS();
-    } else {
-        return FAILURE("object is NOT in the allowed instrument list")
     }
- }}
 ];
 
 
