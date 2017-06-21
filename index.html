@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" ng-app="loggyApp">
 <head>
     <meta charset="utf-8">
@@ -52,8 +52,7 @@
         </div>
 
         <div class="col-md-4">
-            <p>Trades in queue</p>
-
+            <h4>Trades in queue</h4>
                <select readonly="readonly" multiple="true" size="10" style="width:80%">
                    <option ng-repeat="trade in loggy.JQ">{{trade.id}}</option>
                </select>
@@ -68,30 +67,34 @@
             <li>Perhaps use "collapseables" and show findings via badges</li>
             <li>mark the steward more clearly</li>
             <li>mark the asset more clearly</li>
-
-
         </ul>
-
-
     </div>
 
-    <div ng-repeat="test in loggy.testSuite">
+	
+	<div class="panel panel-default" ng-repeat="test in loggy.testSuite">
+	  <div class="panel-heading">
+		<h3 class="panel-title "data-toggle="collapse" data-target="#test_{{$index}}_body">{{test.dataAsset}} \ {{test.name}}<span class="badge pull-right">{{test.log.length}}</span></h3>
+	  </div>
+	  <div class="panel-body " id="test_{{$index}}_body"  >
+	  <div class="row">
+	  <div class="col-md-6">
+		<p>Steward: <a href="#">{{test.steward}}</a></p>
+		<p>description: {{test.description}}</p>
+		<pre>{{test.testFunction}}</pre>
+	  </div>
+	  <div class="col-md-6">
+		<ul class="list-group">
+			<li class="list-group-item list-group-item-{{entry.type}}" ng-repeat="entry in test.log">{{entry.message}}<span class="glyphicon glyphicon-cog pull-right"></span></li>
 
-
-
-        <div class="row">
-
-
-        <div class="col-md-4"><h4>{{test.dataAsset}} \ {{test.name}}</h4><p>{{test.description}}</p></div>
-        <div class="col-md-4"><h4>{{test.steward}}</h4></div>
-        <div class="col-md-3"></div>
-        </div>
-        <div class="row">
-        <div class="col-md-12"><h4>{{test.name}}</h4></div>
-        <div class="col-md-6"><pre>{{test.testFunction}}</pre></div>
-        <div class="col-md-6"><div class="alert alert-{{entry.type}}" ng-repeat="entry in test.log">{{entry.message}}<div class="pull-right"><span class="glyphicon glyphicon-ok "></span>&nbsp;<span class="glyphicon glyphicon-remove"></span>&nbsp;<span class="glyphicon glyphicon-envelope"></span></div></div></div>
-        </div>
-    </div>
+		</ul>
+	  </div>
+	  </div>
+		
+	  </div>
+	</div>
+	
+	
+	
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
