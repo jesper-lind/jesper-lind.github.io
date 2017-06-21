@@ -2,7 +2,8 @@
     .controller('loggyController', function($resource,$timeout,$q) {
 
         var loggy = this;
-		var simulator;        
+		var simulator;
+
         
 		var googlePrice = $resource('http://finance.google.com/finance/info?client=ig&q=NYSE%3A:tick');
 		var googlePriceArray = [ { "id": "657729" ,"t" : "NOK" ,"e" : "NYSE" ,"l" : "6.38" ,"l_fix" : "6.38" ,"l_cur" : "6.38" ,"s": "2" ,"ltt":"4:01PM EDT" ,"lt" : "Jun 14, 4:01PM EDT" ,"lt_dts" : "2017-06-14T16:01:10Z" ,"c" : "-0.04" ,"c_fix" : "-0.04" ,"cp" : "-0.62" ,"cp_fix" : "-0.62" ,"ccol" : "chr" ,"pcls_fix" : "6.42" ,"el": "6.38" ,"el_fix": "6.38" ,"el_cur": "6.38" ,"elt" : "Jun 14, 4:01PM EDT" ,"ec" : "0.00" ,"ec_fix" : "0.00" ,"ecp" : "0.00" ,"ecp_fix" : "0.00" ,"eccol" : "chb" ,"div" : "0.19" ,"yld" : "2.98" } ,{ "id": "22144" ,"t" : "AAPL" ,"e" : "NASDAQ" ,"l" : "145.16" ,"l_fix" : "145.16" ,"l_cur" : "145.16" ,"s": "2" ,"ltt":"4:00PM EDT" ,"lt" : "Jun 14, 4:00PM EDT" ,"lt_dts" : "2017-06-14T16:00:07Z" ,"c" : "-1.43" ,"c_fix" : "-1.43" ,"cp" : "-0.98" ,"cp_fix" : "-0.98" ,"ccol" : "chr" ,"pcls_fix" : "146.59" ,"el": "145.15" ,"el_fix": "145.15" ,"el_cur": "145.15" ,"elt" : "Jun 14, 4:15PM EDT" ,"ec" : "-0.01" ,"ec_fix" : "-0.01" ,"ecp" : "-0.01" ,"ecp_fix" : "-0.01" ,"eccol" : "chr" ,"div" : "0.63" ,"yld" : "1.74" } ];
@@ -49,7 +50,7 @@ testFunction: function(trade){
     if(googleInstrument!= null && assertEquals(googleInstrument.el,trade.instrument.price)){
 		loggy.logFinding(this,trade ,{"message":"We found the right price ",type:"success"});		        
     } else {
-		loggy.logFinding(this,trade,{"message":"Our price and google did not match",type:"warning"});		
+		loggy.logFinding(this,trade,{"message":"Our price and google did not match; price expected: "+googleInstrument.el+" price was: "+trade.instrument.price,type:"warning"});
     }
 }},
 {name:"Is instrument allowed",
@@ -95,9 +96,9 @@ testFunction:function(trade) {
             return instrument;
         }
 
-        loggy.logFinding=function(test,trade, message){
-			if(trade.log == undefined){
-				trade.log = [];
+        loggy.logFinding=function(test,object, message){
+			if(object.log == undefined){
+                object.log = [];
 			};
 			
 			var logMessage = {
@@ -105,9 +106,10 @@ testFunction:function(trade) {
 				text:message.message,
 				type:message.type
 			};
-			
-			trade.log.push(logMessage);
+
+            object.log.push(logMessage);
         }
+
 
 		loggy.initTestLog=function(test){
 			if(test.log == undefined){
@@ -126,7 +128,7 @@ testFunction:function(trade) {
 		
         loggy.injectTrade= function(){
 			
-			var tradeId = Math.floor((Math.random() * 1000) + 1)
+			var tradeId = Math.floor((Math.random() * 10000) + 1)
 			var instrumentPrice =Math.round ((6.32+(Math.random()/10)) * 100) / 100;
 			var instrumentId = googlePriceArray[Math.round(Math.random())].t
 			
