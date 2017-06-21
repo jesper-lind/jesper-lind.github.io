@@ -32,70 +32,85 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li class="active"><a data-toggle="tab" href="#Log">Home</a></li>
+                <li><a data-toggle="tab" href="#Tests">Test Config</a></li>
+                <li><a data-toggle="tab" href="#contact">Contact</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
 </nav>
 <div class="container" ng-controller="loggyController as loggy">
    <div class="row alert alert-info">
-        <div class="col-md-8">
+        <div class="col-md-8  ">
         This is a POC of a simple javascript based solution for logging of validation tests.
         <ol>
-            <li>click "inject trade" to simulated trade info is input in a queue</li>
-            <li>"click "Run tests" to start executing trades based on whats in queue</li>
+            <li>click "Start queue" to start simulating trades entering a queue</li>
+            <li>"click "Start queue" to stop the simulation</li>			
         </ol>
-            <button ng-click="loggy.injectTrade()" class="btn btn-default">Inject Trade</button>
-            <button ng-click="loggy.executeTests()" class="btn btn-default">Run Tests</button>
+            <button ng-click="loggy.startSimulation()" class="btn btn-default">Start queue</button>
+			<button ng-click="loggy.stopSimulation()" class="btn btn-default">Stop queue</button>
         </div>
-
-        <div class="col-md-4">
-            <h4>Trades in queue</h4>
-               <select readonly="readonly" multiple="true" size="10" style="width:80%">
-                   <option ng-repeat="trade in loggy.JQ">{{trade.id}}</option>
-               </select>
-        </div>
+		<div class="col-md-4">
+		<h4> Filter messages</h4>
+		<p></p>
+			<div class="btn-group ">
+			  <button class="btn btn-default" ng-click="filters.type = 'warning'">Warning</button>
+			  <button class="btn btn-default" ng-click="filters.type = 'success'">Success</button>
+			  <button class="btn btn-default" ng-click="filters.type = ''">Clear filter</button>
+			</div>		
+		</div>
     </div>
 
-
-    <div class="alert alert-danger">
-        <ul>
-            <li>Add Log instead of "return"</li>
-            <li>Rework the layout pr test</li>
-            <li>Perhaps use "collapseables" and show findings via badges</li>
-            <li>mark the steward more clearly</li>
-            <li>mark the asset more clearly</li>
-        </ul>
-    </div>
-
-	
-	<div class="panel panel-default" ng-repeat="test in loggy.testSuite">
-	  <div class="panel-heading">
-		<h3 class="panel-title "data-toggle="collapse" data-target="#test_{{$index}}_body">{{test.dataAsset}} \ {{test.name}}<span class="badge pull-right">{{test.log.length}}</span></h3>
-	  </div>
-	  <div class="panel-body " id="test_{{$index}}_body"  >
-	  <div class="row">
-	  <div class="col-md-6">
-		<p>Steward: <a href="#">{{test.steward}}</a></p>
-		<p>description: {{test.description}}</p>
-		<pre>{{test.testFunction}}</pre>
-	  </div>
-	  <div class="col-md-6">
-		<ul class="list-group">
-			<li class="list-group-item list-group-item-{{entry.type}}" ng-repeat="entry in test.log">{{entry.message}}<span class="glyphicon glyphicon-cog pull-right"></span></li>
-
-		</ul>
-	  </div>
-	  </div>
+   
+	<div class="tab-content">
+		<div id="Log" class="tab-pane active">
+		<table class="table table-striped" ng-hide="loggy.testedTrades.length == 0">
+		 <thead >
+			  <tr>
+				<th>Asset</th>
+				<th>Identifier</th>
+				<th>Test</th>
+				<th>Message</th>
+				<th>Type</th>
+				<th>&nbsp;</th>
+			  </tr>
+			</thead>
+		<tbody ng-repeat="trade in loggy.testedTrades | orderBy : 'id' " >
+			<tr ng-repeat="testResult in trade.log | filter:filters" class="{{testResult.type}}">
+					<td>{{testResult.test.dataAsset}}</td>
+					<td>{{trade.id}}</td>
+					<td>{{testResult.test.name}} </td>
+					<td>{{testResult.text}}</td>
+					<td>{{testResult.type}}</td>
+					<td></td>
+				</tr>
+		</tbody >
+		</table>
+		
+		
 		
 	  </div>
+	  <div id="Tests" class="tab-pane">
+	  	<div class="panel panel-primary" ng-repeat="test in loggy.testSuite">
+			<div class="panel-heading">
+				<h3 class="panel-title">{{test.dataAsset}} \ {{test.name}}</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12">
+						<p><strong>Steward</strong> : <a href="#">{{test.steward}}</a></p>
+						<p><strong>Description</strong> : {{test.description}}</p>
+						<p><strong>Data Asset</strong> : {{test.dataAsset}}</p>
+						<p><strong>Trigger</strong> </strong>: {{test.triggerEvent}}</p>
+						<br/>
+						<h4>Function</h4>
+						<pre>{{test.testFunction}}</pre>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
 	</div>
-	
-	
-	
-</div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
